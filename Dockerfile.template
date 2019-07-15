@@ -9,12 +9,15 @@ RUN apt-get update && \
 
 RUN npm install --global npm@latest
 
-RUN nodejs --version
-RUN npm --version
+WORKDIR /usr/src/app/ClientApp
+
+COPY ./ClientApp/package.json ./
+
+RUN npm install
 
 WORKDIR /usr/src/app
 
-COPY ./VendingMachine.csproj ./
+COPY VendingMachine.csproj ./
 
 RUN dotnet restore
 
