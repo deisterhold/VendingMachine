@@ -25,4 +25,4 @@ COPY ./ ./
 
 RUN dotnet publish -c Release -o /usr/bin/app
 
-CMD ["/bin/bash"]
+CMD ["dotnet", "/usr/bin/app/VendingMachine.dll"]
