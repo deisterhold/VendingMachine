@@ -11,17 +11,17 @@ RUN npm install --global npm@latest
 
 WORKDIR /usr/src/app/ClientApp
 
-COPY ./ClientApp/package.json ./
+COPY ./src/ClientApp/package.json ./
 
 RUN npm install
 
 WORKDIR /usr/src/app
 
-COPY VendingMachine.csproj ./
+COPY ./src/VendingMachine.csproj ./
 
 RUN dotnet restore
 
-COPY ./ ./
+COPY ./src ./
 
 RUN dotnet publish -c Release -o /usr/bin/app
 
