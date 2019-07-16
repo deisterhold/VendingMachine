@@ -1,4 +1,4 @@
-FROM mcr.microsoft.com/dotnet/core/sdk:3.0
+FROM mcr.microsoft.com/dotnet/core/sdk:3.0 AS build
 
 RUN apt-get update && \
     apt-get install -yq --no-install-recommends \
@@ -20,11 +20,16 @@ WORKDIR /usr/src/app
 
 COPY ./src/VendingMachine.csproj ./
 
-# RUN dotnet restore -s https://api.nuget.org/v3/index.json -s https://dotnet.myget.org/F/dotnet-core/api/v3/index.json
+RUN dotnet restore -s https://api.nuget.org/v3/index.json -s https://dotnet.myget.org/F/dotnet-core/api/v3/index.json
 
 COPY ./src ./
 
-# RUN dotnet publish -c Release -o /usr/bin/app
+# RUN dotnet publish -c Release -o /usr/bin/app -r linux-arm
+
+FROM balenalib/raspberrypi3-debian
+
+WORKDIR /usr/bin/app
+
+COPY --from=build /usr/bin/app ./
 
 CMD ["/bin/bash"]
-# CMD ["dotnet", "/usr/bin/app/VendingMachine.dll"]
