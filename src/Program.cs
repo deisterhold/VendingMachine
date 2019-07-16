@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using System.Device.I2c;
+using System.Device.I2c.Drivers;
 using Iot.Device.Pca9685;
 using Microsoft.Extensions.Hosting;
 
@@ -24,7 +25,7 @@ namespace VendingMachine
             var deviceAddress = deviceAddress_fixed | deviceAddress_selectable;
 
             var settings = new I2cConnectionSettings(busId, deviceAddress);
-            var device = I2cDevice.Create(settings);
+            var device = new UnixI2cDevice(settings);
 
             using (var pca9685 = new Pca9685(device))
             {
