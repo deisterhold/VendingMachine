@@ -1,4 +1,4 @@
-FROM balenalib/%%BALENA_MACHINE_NAME%%-dotnet
+FROM balenalib/%%BALENA_MACHINE_NAME%%-dotnet:3
 
 RUN apt-get update && \
     apt-get install -yq --no-install-recommends \
@@ -20,10 +20,11 @@ WORKDIR /usr/src/app
 
 COPY ./src/VendingMachine.csproj ./
 
-RUN dotnet restore
+# RUN dotnet restore -s https://api.nuget.org/v3/index.json -s https://dotnet.myget.org/F/dotnet-core/api/v3/index.json
 
 COPY ./src ./
 
-RUN dotnet publish -c Release -o /usr/bin/app
+# RUN dotnet publish -c Release -o /usr/bin/app
 
-CMD ["dotnet", "/usr/bin/app/VendingMachine.dll"]
+CMD ["/bin/bash"]
+# CMD ["dotnet", "/usr/bin/app/VendingMachine.dll"]
