@@ -48,6 +48,7 @@ namespace VendingMachine.Web
             app.UseStaticFiles();
             app.UseSpaStaticFiles();
 
+            app.UseRouting();
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute("default", "{controller=Home}/{action=Index}/{id?}");
