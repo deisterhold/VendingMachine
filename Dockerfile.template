@@ -1,4 +1,4 @@
-FROM mcr.microsoft.com/dotnet/core/sdk:3.0 AS build
+FROM mcr.microsoft.com/dotnet/core/sdk:3.0 AS webbuild
 
 RUN apt-get update && \
     apt-get install -yq --no-install-recommends \
@@ -18,13 +18,25 @@ RUN npm install
 
 WORKDIR /usr/src/web
 
-COPY ./src/VendingMachine.csproj ./
+COPY ./src/web/VendingMachine.Web.csproj ./
 
 RUN dotnet restore
 
-COPY ./src ./
+COPY ./src/web ./
 
 RUN dotnet publish -c Release -o /usr/bin/web -r linux-arm
+
+FROM mcr.microsoft.com/dotnet/core/sdk:3.0 AS iotbuild
+
+WORKDIR /usr/src/iot
+
+COPY ./src/iot/VendingMachine.Iot.csproj ./
+
+RUN dotnet restore
+
+COPY ./src/iot ./
+
+RUN dotnet publish -c Release -o /usr/bin/iot -r linux-arm
 
 FROM balenalib/raspberrypi3-debian
 
@@ -48,8 +60,12 @@ ENV ASPNETCORE_URLS=http://+:80
 # Enable detection of running in a container
 ENV DOTNET_RUNNING_IN_CONTAINER=true
 
+WORKDIR /usr/bin/iot
+
+COPY --from=iotbuild /usr/bin/iot ./
+
 WORKDIR /usr/bin/web
 
-COPY --from=build /usr/bin/web ./
+COPY --from=webbuild /usr/bin/web ./
 
 CMD ["/bin/bash"]
