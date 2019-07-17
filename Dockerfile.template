@@ -9,14 +9,14 @@ RUN apt-get update && \
 
 RUN npm install --global npm@latest
 
-WORKDIR /usr/src/app/ClientApp
+WORKDIR /usr/src/web/ClientApp
 
-COPY ./src/ClientApp/package.json ./
-COPY ./src/ClientApp/package-lock.json ./
+COPY ./src/web/ClientApp/package.json ./
+COPY ./src/web/ClientApp/package-lock.json ./
 
 RUN npm install
 
-WORKDIR /usr/src/app
+WORKDIR /usr/src/web
 
 COPY ./src/VendingMachine.csproj ./
 
@@ -24,7 +24,7 @@ RUN dotnet restore
 
 COPY ./src ./
 
-RUN dotnet publish -c Release -o /usr/bin/app -r linux-arm
+RUN dotnet publish -c Release -o /usr/bin/web -r linux-arm
 
 FROM balenalib/raspberrypi3-debian
 
@@ -48,8 +48,8 @@ ENV ASPNETCORE_URLS=http://+:80
 # Enable detection of running in a container
 ENV DOTNET_RUNNING_IN_CONTAINER=true
 
-WORKDIR /usr/bin/app
+WORKDIR /usr/bin/web
 
-COPY --from=build /usr/bin/app ./
+COPY --from=build /usr/bin/web ./
 
 CMD ["/bin/bash"]
