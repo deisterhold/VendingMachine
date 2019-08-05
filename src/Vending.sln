@@ -3,14 +3,16 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29025.244
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VendingMachine.Web", "web\VendingMachine.Web.csproj", "{A7BF9607-1073-4F12-89D2-F80C489C322E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vending.Web", "web\Vending.Web.csproj", "{A7BF9607-1073-4F12-89D2-F80C489C322E}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VendingMachine.Iot", "iot\VendingMachine.Iot.csproj", "{5208C379-FCBC-4F81-B4D2-23A84B60BAB2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vending.Iot", "iot\Vending.Iot.csproj", "{5208C379-FCBC-4F81-B4D2-23A84B60BAB2}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{98EAA0D6-29CA-402D-B19A-F395EF6D41B2}"
 	ProjectSection(SolutionItems) = preProject
 		docker-compose.yml = docker-compose.yml
 	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Iot.Web", "Iot.Web\Iot.Web.csproj", "{3CCF4166-8C6A-420D-B050-0FF679A8CA73}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -26,6 +28,10 @@ Global
 		{5208C379-FCBC-4F81-B4D2-23A84B60BAB2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5208C379-FCBC-4F81-B4D2-23A84B60BAB2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5208C379-FCBC-4F81-B4D2-23A84B60BAB2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3CCF4166-8C6A-420D-B050-0FF679A8CA73}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3CCF4166-8C6A-420D-B050-0FF679A8CA73}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3CCF4166-8C6A-420D-B050-0FF679A8CA73}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3CCF4166-8C6A-420D-B050-0FF679A8CA73}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

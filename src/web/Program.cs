@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
 
-namespace VendingMachine.Web
+namespace Vending.Web
 {
     public class Program
     {

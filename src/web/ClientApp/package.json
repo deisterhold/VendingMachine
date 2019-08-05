@@ -1,11 +1,11 @@
 {
-  "name": "VendingMachine",
+  "name": "Vending",
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
-    "build:ssr": "ng run VendingMachine:server:dev",
+    "build:ssr": "ng run Vending:server:dev",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e"

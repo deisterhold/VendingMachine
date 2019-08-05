@@ -2,7 +2,7 @@ FROM mcr.microsoft.com/dotnet/core/sdk:3.0 AS build
 
 WORKDIR /usr/src/app
 
-COPY ./VendingMachine.Iot.csproj ./
+COPY ./Vending.Iot.csproj ./
 
 RUN dotnet restore
 

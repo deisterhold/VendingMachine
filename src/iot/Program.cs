@@ -1,51 +1,28 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Device.I2c;
-using System.Device.I2c.Drivers;
-using System.Threading;
+using System.Linq;
 using System.Threading.Tasks;
-using Grpc.Core;
 using Iot.Device.Pca9685;
-using VendingMachine.Service;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 
-namespace VendingMachine.Iot
+namespace Vending.Iot
 {
-    class VendingMachineImpl : Service.VendingMachine.VendingMachineBase
+    public class Program
     {
-        public override Task<VendResponse> VendItem(VendRequest request, ServerCallContext context)
+        public static void Main(string[] args)
         {
-            var pwmTask = new Task<UnixI2cDevice>(() =>
-                {
-                    const int busId = 1; // /dev/i2c-1
-                    const int deviceAddressFixed = 0x40;
-                    const int deviceAddressSelectable = 0b000000; // A5 A4 A3 A2 A1 A0
-                    const int deviceAddress = deviceAddressFixed | deviceAddressSelectable;
-
-                    var settings = new I2cConnectionSettings(busId, deviceAddress);
-
-                    return new UnixI2cDevice(settings);
-                }).ContinueWith(async (t) =>
-                {
-                    using var pca9685 = new Pca9685(t.Result) {PwmFrequency = 60000};
-                    pca9685.SetPwm(0, 120);
-                    await Task.Delay(1000);
-                    pca9685.SetPwm(0, 0);
-                    return new VendResponse {Quantity = request.Quantity};
-                })
-                .Unwrap();
-
-            return pwmTask;
+            CreateHostBuilder(args).Build().Run();
         }
-    }
 
-    class Program
-    {
-        static async Task Main(string[] args)
-        {
-            if (args.Length == 1 && int.TryParse(args[0], out var index))
-            {
-                var impl = new VendingMachineImpl();
-                await impl.VendItem(new VendRequest {Quantity = index}, null);
-            }
-        }
+        public static IHostBuilder CreateHostBuilder(string[] args) =>
+            Host.CreateDefaultBuilder(args)
+                .ConfigureWebHostDefaults(webBuilder =>
+                {
+                    webBuilder.UseStartup<Startup>();
+                });
     }
 }

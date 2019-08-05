@@ -18,7 +18,7 @@ RUN npm install
 
 WORKDIR /usr/src/app
 
-COPY ./VendingMachine.Web.csproj ./
+COPY ./Vending.Web.csproj ./
 
 RUN dotnet restore
 
