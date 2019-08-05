@@ -2,11 +2,11 @@ FROM mcr.microsoft.com/dotnet/core/sdk:3.0 AS build
 
 WORKDIR /usr/src/app
 
-COPY ./src/iot/VendingMachine.Iot.csproj ./
+COPY ./VendingMachine.Iot.csproj ./
 
 RUN dotnet restore
 
-COPY ./src/iot ./
+COPY ./ ./
 
 RUN dotnet publish -c Release -o /usr/bin/app -r linux-arm
 

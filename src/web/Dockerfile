@@ -11,18 +11,18 @@ RUN npm install --global npm@latest
 
 WORKDIR /usr/src/app/ClientApp
 
-COPY ./src/web/ClientApp/package.json ./
-COPY ./src/web/ClientApp/package-lock.json ./
+COPY ./ClientApp/package.json ./
+COPY ./ClientApp/package-lock.json ./
 
 RUN npm install
 
 WORKDIR /usr/src/app
 
-COPY ./src/web/VendingMachine.Web.csproj ./
+COPY ./VendingMachine.Web.csproj ./
 
 RUN dotnet restore
 
-COPY ./src/web ./
+COPY ./ ./
 
 RUN dotnet publish -c Release -o /usr/bin/app -r linux-arm
 
