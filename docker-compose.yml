@@ -1,0 +1,12 @@
+version: '2'
+services:
+  web:
+    build: ./src/web
+    depends_on:
+      - iot
+    ports:
+      - "80:80"
+  iot:
+    build: ./src/iot
+    expose:
+      - "8080"
