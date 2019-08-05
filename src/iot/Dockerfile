@@ -1,33 +1,5 @@
 FROM mcr.microsoft.com/dotnet/core/sdk:3.0 AS build
 
-# Protocol Buffer Compiler Dependencies
-RUN apt-get update \
-    && apt-get install -y --no-install-recommends \
-        autoconf \
-        automake \
-        curl \
-        git \
-        g++ \
-        libtool \
-        make \
-        unzip \
-    && rm -rf /var/lib/apt/lists/*
-
-WORKDIR /tmp
-
-RUN git clone https://github.com/protocolbuffers/protobuf.git
-
-WORKDIR /tmp/protobuf
-
-RUN git submodule update --init --recursive
-RUN ./autogen.sh
-
-RUN ./configure
-RUN make
-RUN make check
-RUN make install
-RUN ldconfig
-
 WORKDIR /usr/src/app
 
 COPY ./VendingMachine.Iot.csproj ./
