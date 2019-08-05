@@ -10,3 +10,4 @@ services:
     build: ./src/iot
     expose:
       - "8080"
+    privileged: true
