@@ -16,7 +16,9 @@ RUN apt-get update \
 WORKDIR /tmp
 
 RUN git clone https://github.com/protocolbuffers/protobuf.git
-RUN cd protobuf
+
+WORKDIR /tmp/protobuf
+
 RUN git submodule update --init --recursive
 RUN ./autogen.sh
 
