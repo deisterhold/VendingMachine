@@ -1,4 +1,6 @@
 version: '2'
+volumes:
+  resin-data:
 services:
   web:
     build: ./src/web
@@ -6,8 +8,12 @@ services:
       - iot
     ports:
       - "80:80"
+    volumes:
+      - "resin-data:/data"
   iot:
     build: ./src/iot
     ports:
       - "8080:8080"
     privileged: true
+    volumes:
+      - "resin-data:/data"
