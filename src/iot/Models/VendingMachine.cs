@@ -39,6 +39,13 @@ namespace Vending.Iot.Models
             _pwm.SetPwm(0, 0, (int)column);
         }
 
+        public async Task Vend(VendingMachineColumn column, int on, int off, TimeSpan duration)
+        {
+            _pwm.SetPwm(0, 120, (int)column);
+            await Task.Delay(duration);
+            _pwm.SetPwm(0, 0, (int)column);
+        }
+
         public void Dispose()
         {
             _device?.Dispose();
