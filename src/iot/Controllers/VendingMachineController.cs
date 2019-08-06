@@ -19,12 +19,15 @@ namespace Vending.Iot.Controllers
             _logger = logger;
         }
 
-        [HttpPost("{column:int}")]
-        public void Vend(VendingMachineColumn column)
+        [HttpGet("vend/{column:int}/{duration:min(1):max(5000)}")]
+        public async Task<IActionResult> Vend(VendingMachineColumn column, int duration)
         {
+            if (!Enum.IsDefined(typeof(VendingMachineColumn), column)) return BadRequest("Unknown column.");
+
             using (var machine = new VendingMachine())
             {
-
+                await machine.Vend(column, TimeSpan.FromMilliseconds(duration));
+                return Ok();
             }
         }
     }

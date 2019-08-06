@@ -8,9 +8,6 @@ RUN dotnet restore
 
 COPY ./ ./
 
-ENV DOTNET_RUNNING_IN_CONTAINER=true
-ENV DOTNET_RUNNING_IN_CONTAINER=true
-
 RUN dotnet publish -c Release -o /usr/bin/app -r linux-arm
 
 FROM balenalib/raspberrypi3-debian
@@ -28,6 +25,9 @@ RUN apt-get update \
         libstdc++6 \
         zlib1g \
     && rm -rf /var/lib/apt/lists/*
+
+# Configure web servers to bind to port 80 when present
+ENV ASPNETCORE_URLS=http://+:8080
 
 # Enable detection of running in a container
 ENV DOTNET_RUNNING_IN_CONTAINER=true
