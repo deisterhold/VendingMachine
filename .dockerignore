@@ -1,3 +1,6 @@
+docker-compose.yml
+
+img/*
+
 src/iot/Dockerfile
 src/web/Dockerfile
-docker-compose.yml
