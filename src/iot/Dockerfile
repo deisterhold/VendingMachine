@@ -36,4 +36,4 @@ WORKDIR /usr/bin/app
 
 COPY --from=build /usr/bin/app ./
 
-CMD ["/bin/bash"]
+CMD ["/usr/bin/app/Vending.Iot"]
