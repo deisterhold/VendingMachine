@@ -52,4 +52,5 @@ WORKDIR /usr/bin/app
 
 COPY --from=build /usr/bin/app ./
 
-CMD ["/usr/bin/app/Vending.Web"]
+# CMD ["/usr/bin/app/Vending.Web"]
+CMD ["/bin/bash"]
