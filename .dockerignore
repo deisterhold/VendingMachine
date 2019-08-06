@@ -1,1 +1,3 @@
-Dockerfile
+src/iot/Dockerfile
+src/web/Dockerfile
+docker-compose.yml
