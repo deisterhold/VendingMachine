@@ -6,6 +6,8 @@ services:
     build: ./src/web
     depends_on:
       - iot
+    labels:
+      io.balena.features.dbus: '1'
     ports:
       - "80:80"
     volumes:

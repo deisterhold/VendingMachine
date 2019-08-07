@@ -28,6 +28,17 @@ RUN dotnet publish -c Release -o /usr/bin/app -r linux-arm
 
 FROM balenalib/raspberrypi3-debian
 
+RUN install_packages dnsmasq wireless-tools
+
+WORKDIR /usr/src/wifi
+
+RUN curl https://api.github.com/repos/balena-io/wifi-connect/releases/latest -s \
+    | grep -hoP 'browser_download_url": "\K.*%%BALENA_ARCH%%\.tar\.gz' \
+    | xargs -n1 curl -Ls \
+    | tar -xvz -C /usr/src/wifi/
+
+COPY scripts/start.sh .
+
 RUN apt-get update \
     && apt-get install -y --no-install-recommends \
         ca-certificates \
@@ -52,4 +63,4 @@ WORKDIR /usr/bin/app
 
 COPY --from=build /usr/bin/app ./
 
-CMD ["/usr/bin/app/Vending.Web"]
+CMD [ "/usr/src/wifi/start.sh" ]
