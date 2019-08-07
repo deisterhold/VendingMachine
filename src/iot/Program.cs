@@ -39,39 +39,41 @@ namespace Vending.Iot
                 PinChangeEventHandler callback = (object sender, PinValueChangedEventArgs args) => {
                     if (args.ChangeType == PinEventTypes.Rising)
                     {
-                        switch (args.PinNumber)
-                        {
-                            case INPUT_1:
-                                pwm.SetPwm(0, 120, 13);
-                                break;
-                            case INPUT_2:
-                                pwm.SetPwm(0, 120, 14);
-                                break;
-                            case INPUT_3:
-                                pwm.SetPwm(0, 120, 15);
-                                break;
-                            default:
-                                Console.WriteLine("Unknown Rising Pin: {0}", args.PinNumber);
-                                break;
-                        }
+                        Console.WriteLine("Rising Pin: {0}", args.PinNumber);
+                        //switch (args.PinNumber)
+                        //{
+                        //    case INPUT_1:
+                        //        pwm.SetPwm(0, 120, 13);
+                        //        break;
+                        //    case INPUT_2:
+                        //        pwm.SetPwm(0, 120, 14);
+                        //        break;
+                        //    case INPUT_3:
+                        //        pwm.SetPwm(0, 120, 15);
+                        //        break;
+                        //    default:
+                        //        Console.WriteLine("Unknown Rising Pin: {0}", args.PinNumber);
+                        //        break;
+                        //}
                     }
                     else
                     {
-                        switch (args.PinNumber)
-                        {
-                            case INPUT_1:
-                                pwm.SetPwm(0, 0, 13);
-                                break;
-                            case INPUT_2:
-                                pwm.SetPwm(0, 0, 14);
-                                break;
-                            case INPUT_3:
-                                pwm.SetPwm(0, 0, 15);
-                                break;
-                            default:
-                                Console.WriteLine("Unknown Falling Pin: {0}", args.PinNumber);
-                                break;
-                        }
+                        Console.WriteLine("Falling Pin: {0}", args.PinNumber);
+                        //switch (args.PinNumber)
+                        //{
+                        //    case INPUT_1:
+                        //        pwm.SetPwm(0, 0, 13);
+                        //        break;
+                        //    case INPUT_2:
+                        //        pwm.SetPwm(0, 0, 14);
+                        //        break;
+                        //    case INPUT_3:
+                        //        pwm.SetPwm(0, 0, 15);
+                        //        break;
+                        //    default:
+                        //        Console.WriteLine("Unknown Falling Pin: {0}", args.PinNumber);
+                        //        break;
+                        //}
                     }
                 };
 
