@@ -21,38 +21,24 @@ namespace Vending.Iot
 
         public static void Main(string[] args)
         {
-            try
+            using (var controller = new GpioController(PinNumberingScheme.Board))
             {
-                using (var controller = new GpioController(PinNumberingScheme.Board))
+                controller.OpenPin(INPUT_1, PinMode.InputPullUp);
+                controller.OpenPin(INPUT_2, PinMode.InputPullUp);
+                controller.OpenPin(INPUT_3, PinMode.InputPullUp);
+
+                PinChangeEventHandler callback = (object sender, PinValueChangedEventArgs args) => {
+                    Console.WriteLine("Pin: {0}, Change Type: {0}", args.PinNumber, args.ChangeType);
+                };
+
+                controller.RegisterCallbackForPinValueChangedEvent(INPUT_1, PinEventTypes.Falling, callback);
+                controller.RegisterCallbackForPinValueChangedEvent(INPUT_2, PinEventTypes.Falling, callback);
+                controller.RegisterCallbackForPinValueChangedEvent(INPUT_3, PinEventTypes.Falling, callback);
+
+                while (true)
                 {
-                    controller.OpenPin(INPUT_1, PinMode.InputPullUp);
-                    controller.OpenPin(INPUT_2, PinMode.InputPullUp);
-                    controller.OpenPin(INPUT_3, PinMode.InputPullUp);
-
-                    try
-                    {
-                        PinChangeEventHandler callback = (object sender, PinValueChangedEventArgs args) => {
-                            Console.WriteLine("Pin: {0}, Change Type: {0}", args.PinNumber, args.ChangeType);
-                        };
-
-                        controller.RegisterCallbackForPinValueChangedEvent(INPUT_1, PinEventTypes.Falling, callback);
-                        controller.RegisterCallbackForPinValueChangedEvent(INPUT_2, PinEventTypes.Falling, callback);
-                        controller.RegisterCallbackForPinValueChangedEvent(INPUT_3, PinEventTypes.Falling, callback);
-
-                        while (true)
-                        {
-                            Thread.Sleep(60 * 1000);
-                        }
-                    }
-                    finally
-                    {
-
-                    }
+                    Thread.Sleep(60 * 1000);
                 }
-            }
-            catch
-            {
-
             }
 
             //CreateHostBuilder(args).Build().Run();
