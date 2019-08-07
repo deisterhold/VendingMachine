@@ -21,7 +21,7 @@ namespace Vending.Iot
 
         public static void Main(string[] args)
         {
-            using (var controller = new GpioController(PinNumberingScheme.Board))
+            using (var controller = new GpioController(PinNumberingScheme.Logical))
             {
                 controller.OpenPin(INPUT_1, PinMode.InputPullUp);
                 controller.OpenPin(INPUT_2, PinMode.InputPullUp);
