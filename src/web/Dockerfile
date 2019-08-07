@@ -65,6 +65,4 @@ WORKDIR /usr/bin/app
 
 COPY --from=build /usr/bin/app ./
 
-WORKDIR /usr/src/wifi
-
-CMD [ "/bin/bash", "start.sh" ]
+CMD [ "./Vending.Web" ]
