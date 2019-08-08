@@ -15,81 +15,11 @@ namespace Vending.Iot
 {
     public class Program
     {
-        const int INPUT_1 = 26;
-        const int INPUT_2 = 20;
-        const int INPUT_3 = 21;
+        
 
         public static void Main(string[] args)
         {
-            const int busId = 1;
-            const int deviceAddressFixed = 0x40;
-            const int deviceAddressSelectable = 0b000000; // A5 A4 A3 A2 A1 A0
-            const int deviceAddress = deviceAddressFixed | deviceAddressSelectable;
-
-            var settings = new I2cConnectionSettings(busId, deviceAddress);
-
-            using (var i2cDevice = I2cDevice.Create(settings))
-            using (var pwm = new Pca9685(i2cDevice))
-            using (var controller = new GpioController(PinNumberingScheme.Logical))
-            {
-                controller.OpenPin(INPUT_1, PinMode.InputPullUp);
-                controller.OpenPin(INPUT_2, PinMode.InputPullUp);
-                controller.OpenPin(INPUT_3, PinMode.InputPullUp);
-
-                PinChangeEventHandler callback = (object sender, PinValueChangedEventArgs args) => {
-                    if (args.ChangeType == PinEventTypes.Falling)
-                    {
-                        Console.WriteLine("Falling Pin: {0}", args.PinNumber);
-                        
-                        switch (args.PinNumber)
-                        {
-                            case INPUT_1:
-                                pwm.SetPwm(0, 120, 13);
-                                break;
-                            case INPUT_2:
-                                pwm.SetPwm(0, 120, 14);
-                                break;
-                            case INPUT_3:
-                                pwm.SetPwm(0, 120, 15);
-                                break;
-                            default:
-                                Console.WriteLine("Unknown Rising Pin: {0}", args.PinNumber);
-                                break;
-                        }
-                    }
-                    else
-                    {
-                        Console.WriteLine("Rising Pin: {0}", args.PinNumber);
-
-                        switch (args.PinNumber)
-                        {
-                            case INPUT_1:
-                                pwm.SetPwm(0, 0, 13);
-                                break;
-                            case INPUT_2:
-                                pwm.SetPwm(0, 0, 14);
-                                break;
-                            case INPUT_3:
-                                pwm.SetPwm(0, 0, 15);
-                                break;
-                            default:
-                                Console.WriteLine("Unknown Falling Pin: {0}", args.PinNumber);
-                                break;
-                        }
-                    }
-                };
-
-                controller.RegisterCallbackForPinValueChangedEvent(INPUT_1, PinEventTypes.Falling | PinEventTypes.Rising, callback);
-                controller.RegisterCallbackForPinValueChangedEvent(INPUT_2, PinEventTypes.Falling | PinEventTypes.Rising, callback);
-                controller.RegisterCallbackForPinValueChangedEvent(INPUT_3, PinEventTypes.Falling | PinEventTypes.Rising, callback);
-
-                while (true)
-                {
-                    Thread.Sleep(60 * 1000);
-                }
-            }
-
-            //CreateHostBuilder(args).Build().Run();
+            CreateHostBuilder(args).Build().Run();
         }
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
