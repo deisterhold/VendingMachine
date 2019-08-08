@@ -110,12 +110,12 @@ namespace Vending.Iot
                 Hardware.Gpio.OpenPin(HardwareAccess.INPUT_3, PinMode.InputPullUp);
 
                 // Register Event Listeners
-                Hardware.Gpio.RegisterCallbackForPinValueChangedEvent(HardwareAccess.INPUT_1, PinEventTypes.Falling, PinFalling);
-                Hardware.Gpio.RegisterCallbackForPinValueChangedEvent(HardwareAccess.INPUT_2, PinEventTypes.Falling, PinFalling);
-                Hardware.Gpio.RegisterCallbackForPinValueChangedEvent(HardwareAccess.INPUT_3, PinEventTypes.Falling, PinFalling);
-                Hardware.Gpio.RegisterCallbackForPinValueChangedEvent(HardwareAccess.INPUT_1, PinEventTypes.Rising, PinRising);
-                Hardware.Gpio.RegisterCallbackForPinValueChangedEvent(HardwareAccess.INPUT_2, PinEventTypes.Rising, PinRising);
-                Hardware.Gpio.RegisterCallbackForPinValueChangedEvent(HardwareAccess.INPUT_3, PinEventTypes.Rising, PinRising);
+                Hardware.Gpio.RegisterCallbackForPinValueChangedEvent(HardwareAccess.INPUT_1, PinEventTypes.Rising, Button_Pressed);
+                Hardware.Gpio.RegisterCallbackForPinValueChangedEvent(HardwareAccess.INPUT_2, PinEventTypes.Rising, Button_Pressed);
+                Hardware.Gpio.RegisterCallbackForPinValueChangedEvent(HardwareAccess.INPUT_3, PinEventTypes.Rising, Button_Pressed);
+                Hardware.Gpio.RegisterCallbackForPinValueChangedEvent(HardwareAccess.INPUT_1, PinEventTypes.Falling, Button_Released);
+                Hardware.Gpio.RegisterCallbackForPinValueChangedEvent(HardwareAccess.INPUT_2, PinEventTypes.Falling, Button_Released);
+                Hardware.Gpio.RegisterCallbackForPinValueChangedEvent(HardwareAccess.INPUT_3, PinEventTypes.Falling, Button_Released);
             }
 
             return Task.CompletedTask;
@@ -128,12 +128,12 @@ namespace Vending.Iot
             if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
             {
                 // Unregister Event Listeners
-                Hardware.Gpio.UnregisterCallbackForPinValueChangedEvent(HardwareAccess.INPUT_1, PinFalling);
-                Hardware.Gpio.UnregisterCallbackForPinValueChangedEvent(HardwareAccess.INPUT_2, PinFalling);
-                Hardware.Gpio.UnregisterCallbackForPinValueChangedEvent(HardwareAccess.INPUT_3, PinFalling);
-                Hardware.Gpio.UnregisterCallbackForPinValueChangedEvent(HardwareAccess.INPUT_1, PinRising);
-                Hardware.Gpio.UnregisterCallbackForPinValueChangedEvent(HardwareAccess.INPUT_2, PinRising);
-                Hardware.Gpio.UnregisterCallbackForPinValueChangedEvent(HardwareAccess.INPUT_3, PinRising);
+                Hardware.Gpio.UnregisterCallbackForPinValueChangedEvent(HardwareAccess.INPUT_1, Button_Released);
+                Hardware.Gpio.UnregisterCallbackForPinValueChangedEvent(HardwareAccess.INPUT_2, Button_Released);
+                Hardware.Gpio.UnregisterCallbackForPinValueChangedEvent(HardwareAccess.INPUT_3, Button_Released);
+                Hardware.Gpio.UnregisterCallbackForPinValueChangedEvent(HardwareAccess.INPUT_1, Button_Pressed);
+                Hardware.Gpio.UnregisterCallbackForPinValueChangedEvent(HardwareAccess.INPUT_2, Button_Pressed);
+                Hardware.Gpio.UnregisterCallbackForPinValueChangedEvent(HardwareAccess.INPUT_3, Button_Pressed);
             }
 
             return Task.CompletedTask;
@@ -152,7 +152,7 @@ namespace Vending.Iot
 
         #region Event Listeners
 
-        private void PinRising(object sender, PinValueChangedEventArgs args)
+        private void Button_Released(object sender, PinValueChangedEventArgs args)
         {
             Console.WriteLine("Falling Pin: {0}", args.PinNumber);
 
@@ -173,7 +173,7 @@ namespace Vending.Iot
             }
         }
 
-        private void PinFalling(object sender, PinValueChangedEventArgs args)
+        private void Button_Pressed(object sender, PinValueChangedEventArgs args)
         {
             Console.WriteLine("Rising Pin: {0}", args.PinNumber);
 
