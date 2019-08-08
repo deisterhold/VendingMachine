@@ -26,6 +26,12 @@ namespace Vending.Web.Controllers
             });
         }
 
+        [HttpGet("[action]")]
+        public IActionResult Index()
+        {
+            return Ok(Request.Scheme + "://" + Request.Host + "/" + Request.PathBase);
+        }
+
         public class WeatherForecast
         {
             public string DateFormatted { get; set; }

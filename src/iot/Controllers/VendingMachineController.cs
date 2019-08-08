@@ -39,5 +39,11 @@ namespace Vending.Iot.Controllers
 
             return Ok();
         }
+
+        [HttpGet]
+        public IActionResult Index()
+        {
+            return Ok(Request.Scheme + "://" + Request.Host + "/" + Request.PathBase);
+        }
     }
 }
