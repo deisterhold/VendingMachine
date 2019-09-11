@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Device.Gpio;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
@@ -36,6 +37,22 @@ namespace Vending.Iot.Controllers
             _hardware.Pwm?.SetPwm(on, off, column);
             await Task.Delay(duration);
             _hardware.Pwm?.SetPwm(0, 0, column);
+
+            return Ok();
+        }
+
+        [HttpGet("lights/on")]
+        public IActionResult LightsOn()
+        {
+            _hardware.Gpio.Write(HardwareAccess.RELAY_1, PinValue.High);
+
+            return Ok();
+        }
+
+        [HttpGet("lights/off")]
+        public IActionResult LightsOff()
+        {
+            _hardware.Gpio.Write(HardwareAccess.RELAY_1, PinValue.Low);
 
             return Ok();
         }
