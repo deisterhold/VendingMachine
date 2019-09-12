@@ -9,7 +9,7 @@ using Microsoft.Extensions.Logging;
 namespace Vending.Iot.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("api/[controller]")]
     public class VendingMachineController : ControllerBase
     {
         private readonly ILogger<VendingMachineController> _logger;
@@ -21,7 +21,7 @@ namespace Vending.Iot.Controllers
             _hardware = hardware;
         }
 
-        [HttpGet("vend/{column:int:min(0):max(15)}/{duration:min(1):max(5000)}")]
+        [HttpGet("[action]/{column:int:min(0):max(15)}/{duration:min(1):max(5000)}")]
         public async Task<IActionResult> Vend(int column, int duration)
         {
             _hardware.Pwm?.SetPwm(0, 120, column);
@@ -31,7 +31,7 @@ namespace Vending.Iot.Controllers
             return Ok();
         }
 
-        [HttpGet("vend/{column:int:min(0):max(15)}/{on:int}/{off:int}/{duration:min(1):max(5000)}")]
+        [HttpGet("[action]/{column:int:min(0):max(15)}/{on:int}/{off:int}/{duration:min(1):max(5000)}")]
         public async Task<IActionResult> Vend(int column, int on, int off, int duration)
         {
             _hardware.Pwm?.SetPwm(on, off, column);
@@ -41,18 +41,18 @@ namespace Vending.Iot.Controllers
             return Ok();
         }
 
-        [HttpGet("lights/on")]
-        public IActionResult LightsOn()
+        [HttpGet("[action]")]
+        public IActionResult Lights()
         {
-            _hardware.Gpio.Write(HardwareAccess.RELAY_1, PinValue.High);
+            var value = _hardware.Gpio.Read(HardwareAccess.RELAY_1);
 
-            return Ok();
+            return Ok(value == PinValue.High);
         }
 
-        [HttpGet("lights/off")]
-        public IActionResult LightsOff()
+        [HttpPut("[action]")]
+        public IActionResult Lights([FromBody] bool value)
         {
-            _hardware.Gpio.Write(HardwareAccess.RELAY_1, PinValue.Low);
+            _hardware.Gpio.Write(HardwareAccess.RELAY_1, value ? PinValue.High : PinValue.Low);
 
             return Ok();
         }
