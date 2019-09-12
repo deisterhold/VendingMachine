@@ -16,6 +16,9 @@ namespace Vending.Iot
         I2cDevice I2cDevice { get; }
         Pca9685 Pwm { get; }
         GpioController Gpio { get; }
+        bool IsLightOn { get; }
+        void LightsOn();
+        void LightsOff();
     }
 
     public class HardwareAccess : IDisposable, IHardwareAccess
@@ -58,6 +61,25 @@ namespace Vending.Iot
         public I2cDevice I2cDevice { get; private set; }
         public Pca9685 Pwm { get; private set; }
         public GpioController Gpio { get; private set; }
+        public bool IsLightOn { get; private set; }
+        
+        public void LightsOn()
+        {
+            // Ignore if already on
+            if (IsLightOn) return;
+
+            IsLightOn = true;
+            Gpio.Write(HardwareAccess.RELAY_1, PinValue.High);
+        }
+
+        public void LightsOff()
+        {
+            // Ignore if already off
+            if (!IsLightOn) return;
+
+            IsLightOn = false;
+            Gpio.Write(HardwareAccess.RELAY_1, PinValue.Low);
+        }
 
         #endregion
 
@@ -75,6 +97,9 @@ namespace Vending.Iot
 
                 // Setup the pins for the buttons
                 Gpio = new GpioController(PinNumberingScheme.Logical);
+
+                // Setup the pin for the lights
+                Gpio.OpenPin(RELAY_1, PinMode.Output);
             }
         }
         
@@ -125,8 +150,8 @@ namespace Vending.Iot
                 Hardware.Gpio.RegisterCallbackForPinValueChangedEvent(HardwareAccess.INPUT_2, PinEventTypes.Falling, Button_Released);
                 Hardware.Gpio.RegisterCallbackForPinValueChangedEvent(HardwareAccess.INPUT_3, PinEventTypes.Falling, Button_Released);
 
-                // Setup the pin for the lights
-                Hardware.Gpio.OpenPin(HardwareAccess.RELAY_1, PinMode.Output);
+                // Turn on the lights
+                Hardware.LightsOn();
             }
 
             return Task.CompletedTask;
@@ -151,8 +176,8 @@ namespace Vending.Iot
                 Hardware.Gpio.UnregisterCallbackForPinValueChangedEvent(HardwareAccess.INPUT_2, Button_Pressed);
                 Hardware.Gpio.UnregisterCallbackForPinValueChangedEvent(HardwareAccess.INPUT_3, Button_Pressed);
 
-                // Close the pin for the lights
-                Hardware.Gpio.ClosePin(HardwareAccess.RELAY_1);
+                // Turn off the lights
+                Hardware.LightsOff();
             }
 
             return Task.CompletedTask;

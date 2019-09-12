@@ -44,17 +44,22 @@ namespace Vending.Iot.Controllers
         [HttpGet("[action]")]
         public IActionResult Lights()
         {
-            var value = _hardware.Gpio.Read(HardwareAccess.RELAY_1);
-
-            return Ok(value == PinValue.High);
+            return Ok(_hardware.IsLightOn);
         }
 
         [HttpPut("[action]")]
         public IActionResult Lights([FromBody] bool value)
         {
-            _hardware.Gpio.Write(HardwareAccess.RELAY_1, value ? PinValue.High : PinValue.Low);
+            if (value)
+            {
+                _hardware.LightsOn();
+            }
+            else
+            {
+                _hardware.LightsOff();
+            }
 
-            return Ok();
+            return Ok(value);
         }
 
         [HttpGet]
