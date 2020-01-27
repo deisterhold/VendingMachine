@@ -8,12 +8,17 @@ jobs:
     runs-on: ubuntu-latest
     
     steps:
-    - uses: actions/checkout@v1
-    - name: Run a multi-line script
-      with: # Set the secret as an input
-        ssh_priv_key: ${{ secrets.Balena_SSH_Priv_Key }}
-        ssh_pub_key: ${{ secrets.Balena_SSH_Pub_Key }}
-      run: |
-        echo Add other actions to build,
-        echo test, and deploy your project.
-        echo ${{ ssh_pub_key }}
+    - uses: actions/checkout@master
+    - uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: '3.1.100' # SDK Version to use.
+    - run: dotnet build src/Vending.sln
+#     - uses: actions/checkout@v1
+#     - name: Run a multi-line script
+#       with: # Set the secret as an input
+#         ssh_priv_key: ${{ secrets.Balena_SSH_Priv_Key }}
+#         ssh_pub_key: ${{ secrets.Balena_SSH_Pub_Key }}
+#       run: |
+#         echo Add other actions to build,
+#         echo test, and deploy your project.
+#         echo ${{ ssh_pub_key }}
